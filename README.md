@@ -1,4 +1,4 @@
 # lvmxtui
 Simple TUI wrapper for extending lvm partitions
 
-[![asciicast](https://asciinema.org/a/dr56YPcNtWKoZ5AXZP4Vl3Jh4.png)](https://asciinema.org/a/dr56YPcNtWKoZ5AXZP4Vl3Jh4)
+<a href="https://asciinema.org/a/14?autoplay=1"><img src="https://asciinema.org/a/14.png" width="836"/></a>
