@@ -1,0 +1,94 @@
+#!/bin/bash
+
+function exitCurses()
+{
+        if (( $? != 0 )); then
+                exit $?
+        fi
+}
+
+lvmString=""
+listItem=0
+tmpFile=/tmp/lvmNewsize
+
+# Mini how-to
+dialog --title "lvmcurses" \
+--msgbox "This is a curses wrapper for extending lvm partitions.\n\
+- Use the arrows on your keyboard to navigate.\n\
+- Use the spacebar to select items.\n\
+- Press enter for OK or Cancel." 8 60
+
+partDialog=(dialog --radiolist "Choose partition to extend:" 22 76 16)
+
+# Get all lvm partitions in this array
+lvmArr=($(df -Ph | awk '/.*mapper/ { print $NF }'))
+
+for item in ${lvmArr[*]}; do
+        lvmString+="$listItem $item OFF "
+        (( listItem++ ))
+done
+
+options=(${lvmString})
+
+choice=$("${partDialog[@]}" "${options[@]}" 2>&1 >/dev/tty)
+
+exitCurses
+
+selectedPartition="${lvmArr[$choice]}"
+
+# Get volume group name
+vgname=$(df -P | grep "$selectedPartition$" | sed -Es 's|.*mapper/(.*)-.*|\1|')
+# Get free size in volume group
+sizeFree=$(vgdisplay "$vgname" -s | sed -E 's|.*/ (.*free)].*|\1|')
+
+sizeFreeInt=${sizeFree//[!0-9]/}
+
+if (( $sizeFreeInt == 0 )); then
+        dialog --title "No free space in group $vgname" \
+        --msgbox "You cannot expand $selectedPartition. No space left!" 8 60
+        exit 1
+fi
+
+partSize=($(df "$selectedPartition" -Ph | awk '/^[^Fil]/ { print $2 " " $4 }'))
+
+while true; do
+        dialog --title "There is $sizeFree in volume group $vgname" \
+        --inputbox "Current size of $selectedPartition is ${partSize[0]}\n\
+There is currently ${partSize[1]} free on $selectedPartition\n\n\
+Enter size to extend with (Append 'M' for Megabytes or 'G' for Gigabytes): " 12 60 2>"$tmpFile"
+
+        exitCurses
+
+        if ! egrep '([0-9]+M$|[0-9]+G$)' "$tmpFile"; then
+                dialog --title "Try again!" \
+                --msgbox "You have to specify either 'M' (Megabytes) or 'G' (Gigabytes) " 8 60
+        else
+                break
+        fi
+done
+
+exitCurses
+
+extendSize=$(<"$tmpFile")
+
+dialog --title "Confirm resize" \
+--yesno "Are you sure you want to increase partition:\n\
+$selectedPartition\nwith $extendSize?" 8 60
+
+exitCurses
+
+lvmName=$(df -P | egrep ".*mapper.*$selectedPartition$" | awk '{ print $1 }')
+
+# Do the actual resize
+if lvextend -r -L +"$extendSize" "$lvmName" 2>&1 >/dev/null; then
+        partSize=($(df "$selectedPartition" -Ph | awk '/^[^Fil]/ { print $2 " " $4 }'))
+        dialog --title "Resize successful" \
+        --msgbox "Resize of $selectedPartition is done\n\
+New size of $selectedPartition is ${partSize[0]}\n\
+There is now ${partSize[1]} free on $selectedPartition" 12 60 
+else
+        dialog --title "Resize failed" \
+        --msgbox "Resize of $selectedPartition failed with error $?" 8 60
+fi
+
+exit 0
