@@ -3,6 +3,10 @@ Simple TUI wrapper for extending lvm partitions
 
 ![Screenshot](lvmxtui.png?raw=true "Screenshot")
 
+Lists **only** lvm partitions, and gives **only** the option to extend them.
+
+Written in Bash. Depends on the `dialog` package and, well, Bash! :) 
+
 <h2>Installing</h2>
 Clone repository. Then run the install script:
 <pre>
@@ -34,3 +38,6 @@ Run:
 <h2>Video example</h2>
 
 https://asciinema.org/a/dr56YPcNtWKoZ5AXZP4Vl3Jh4
+
+<h2>Supported platforms</h2>
+Tested on Debian 9 and CentOS 7. Should work on any GNU/Linux distribution.
