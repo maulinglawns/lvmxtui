@@ -12,7 +12,7 @@ listItem=0
 tmpFile=/tmp/lvmNewsize
 
 # Mini how-to
-dialog --title "lvmcurses" \
+dialog --title "lvmxtui" \
 --msgbox "This is a curses wrapper for extending lvm partitions.\n\
 - Use the arrows on your keyboard to navigate.\n\
 - Use the spacebar to select items.\n\
