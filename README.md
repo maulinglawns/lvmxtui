@@ -37,7 +37,7 @@ Run:
 
 <h2>Video example</h2>
 
-https://asciinema.org/a/dr56YPcNtWKoZ5AXZP4Vl3Jh4
+https://asciinema.org/a/SuTmezd6q4YBntKM7FENboq9o
 
 <h2>Supported platforms</h2>
 Tested on Debian 9 and CentOS 7. Should work on any GNU/Linux distribution.
