@@ -1,6 +1,8 @@
 # lvmxtui
 Simple TUI wrapper for extending lvm partitions
 
+![Screenshot](lvmxtui.png?raw=true "Screenshot")
+
 <h2>Installing</h2>
 Clone repository. Then run the install script:
 <pre>
