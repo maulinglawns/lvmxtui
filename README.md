@@ -35,9 +35,9 @@ Run:
 
 `sudo lvmxtui`
 
-<h2>Video example</h2>
+<h2>Video example (Debian 9)</h2>
 
-https://asciinema.org/a/SuTmezd6q4YBntKM7FENboq9o
+https://asciinema.org/a/92UgvmbgPAlGQtWoD71Bdnfke
 
 <h2>Supported platforms</h2>
 Tested on Debian 9 and CentOS 7. Should work on any GNU/Linux distribution.
