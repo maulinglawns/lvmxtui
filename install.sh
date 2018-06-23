@@ -9,7 +9,7 @@ elif cat /etc/redhat* &> /dev/null; then
     os="Redhat"
 fi
 
-# We depend on 'inotify-tools' package
+# We depend on 'dialog' package
 if ! which dialog &> /dev/null; then
     echo "Installing dependency package 'dialog'"
     if [[ $os == "Debian" ]]; then
