@@ -13,7 +13,7 @@ fi
 if ! which dialog &> /dev/null; then
     echo "Installing dependency package 'dialog'"
     if [[ $os == "Debian" ]]; then
-	    sudo apt-get install dialog
+        sudo apt-get install dialog
     elif [[ $os == "Redhat" ]]; then
         sudo yum install dialog
     else
